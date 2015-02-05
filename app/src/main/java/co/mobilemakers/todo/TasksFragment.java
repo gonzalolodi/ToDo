@@ -1,6 +1,8 @@
 package co.mobilemakers.todo;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -23,13 +25,27 @@ public class TasksFragment extends ListFragment {
 
     TaskAdapter mAdapter;
 
-
-
+    public static final int REQUEST_CODE = 0;
+    public static final String TASK_TITLE = "task_title";
 
     public TasksFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+                addTask(data.getStringExtra(TASK_TITLE));
+            }
+        }
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +80,8 @@ public class TasksFragment extends ListFragment {
         Boolean handled = false;
         switch (id) {
             case R.id.action_add:
-                addTask();
+                Intent intent = new Intent(getActivity(), AddTaskActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
                 handled = true;
                 break;
         }
@@ -74,9 +91,9 @@ public class TasksFragment extends ListFragment {
         return handled;
     }
 
-    private void addTask() {
-        Task task = new Task()
-        mAdapter.add(signalData);
+    private void addTask(String title) {
+        Task task = new Task(title,false);
+        mAdapter.add(task);
     }
 
 

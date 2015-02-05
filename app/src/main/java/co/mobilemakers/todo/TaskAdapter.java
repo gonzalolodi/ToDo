@@ -20,7 +20,7 @@ public class TaskAdapter extends ArrayAdapter<Task>{
 
     public TaskAdapter(Context context, List<Task> objects) {
         super(context, R.layout.list_task_entry, objects);
-        this.mTasks =objects;
+        mTasks =objects;
         mContext = context;
     }
 
@@ -30,7 +30,7 @@ public class TaskAdapter extends ArrayAdapter<Task>{
         rowView = reuseOrGenerateRowView(convertView, parent);
         displayContentInView(position,rowView);
 
-        return super.getView(position, convertView, parent);
+        return rowView;
     }
 
     private View reuseOrGenerateRowView(View convertView, ViewGroup parent) {
